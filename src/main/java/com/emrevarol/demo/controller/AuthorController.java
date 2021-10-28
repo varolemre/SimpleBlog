@@ -19,32 +19,31 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping
-    public ResponseEntity<Page<Author>> findByPageable(@Param("page") int page, @Param("size") int size){
-        Pageable pageable = PageRequest.of(page,size);
+    public ResponseEntity<Page<Author>> findByPageable(@Param("page") int page, @Param("size") int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(authorService.findByPagination(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Author> findById(@PathVariable Long id){
+    public ResponseEntity<Author> findById(@PathVariable Long id) {
         return ResponseEntity.ok(authorService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Author> createAuthor(@RequestBody AuthorDto authorDto){
+    public ResponseEntity<Author> createAuthor(@RequestBody AuthorDto authorDto) {
         return ResponseEntity.ok(authorService.save(authorDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Author> updateAuthor(@RequestBody AuthorDto authorDto, @PathVariable Long id){
-        return ResponseEntity.ok(authorService.update(authorDto,id));
+    public ResponseEntity<Author> updateAuthor(@RequestBody AuthorDto authorDto, @PathVariable Long id) {
+        return ResponseEntity.ok(authorService.update(authorDto, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAuthor(@PathVariable Long id){
+    public ResponseEntity<?> deleteAuthor(@PathVariable Long id) {
         authorService.deleteById(id);
         return ResponseEntity.ok(true);
     }
-
 
 
 }

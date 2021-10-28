@@ -12,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/blog")
 @RequiredArgsConstructor
@@ -19,29 +21,29 @@ public class BlogController {
     private final BlogService blogService;
 
     @PostMapping
-    public ResponseEntity<Blog> save(@RequestBody BlogDto blogDto){
+    public ResponseEntity<Blog> save(@Valid @RequestBody BlogDto blogDto) {
         return ResponseEntity.ok(blogService.save(blogDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Blog> update(@RequestBody BlogUpdateDto blogUpdateDto, Long id){
-        return ResponseEntity.ok(blogService.update(blogUpdateDto,id));
+    public ResponseEntity<Blog> update(@Valid @RequestBody BlogUpdateDto blogUpdateDto, Long id) {
+        return ResponseEntity.ok(blogService.update(blogUpdateDto, id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         blogService.deleteById(id);
         return ResponseEntity.ok(true);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Blog> findById(@PathVariable Long id){
-        return  ResponseEntity.ok(blogService.findById(id));
+    public ResponseEntity<Blog> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(blogService.findById(id));
     }
 
     @GetMapping
-    public ResponseEntity<Page<Blog>> findByPageable(@Param("page") int page, @Param("size") int size){
-        Pageable pageable = PageRequest.of(page,size);
+    public ResponseEntity<Page<Blog>> findByPageable(@Param("page") int page, @Param("size") int size) {
+        Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(blogService.findByPagination(pageable));
     }
 }
