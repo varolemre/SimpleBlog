@@ -44,4 +44,18 @@ public class AuthorService {
     public Page<Author> findByPagination(Pageable pageable){
        return authorRepository.findAll(pageable);
     }
+
+    public void increaseBlogCount(Long id){
+        Author author = findById(id);
+        Long blogAmount = author.getBlogAmount();
+        author.setBlogAmount(blogAmount+1);
+        authorRepository.save(author);
+    }
+
+    public void decreaseBlogCount(Long id){
+        Author author = findById(id);
+        Long blogAmount = author.getBlogAmount();
+        author.setBlogAmount(blogAmount-1);
+        authorRepository.save(author);
+    }
 }

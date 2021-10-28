@@ -3,11 +3,10 @@ package com.emrevarol.demo.models;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
-public class BlogDto {
+public class BlogUpdateDto {
 
     @NotBlank
     private String title;
@@ -18,9 +17,6 @@ public class BlogDto {
 
     @NotBlank
     private String image;
-
-    @NotNull
-    private Long authorId;
 
     private Long[] categoryIds;
 

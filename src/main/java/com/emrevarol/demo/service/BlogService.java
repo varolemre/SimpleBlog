@@ -4,6 +4,7 @@ import com.emrevarol.demo.entity.Author;
 import com.emrevarol.demo.entity.Blog;
 import com.emrevarol.demo.entity.Category;
 import com.emrevarol.demo.models.BlogDto;
+import com.emrevarol.demo.models.BlogUpdateDto;
 import com.emrevarol.demo.repository.BlogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,12 +32,15 @@ public class BlogService {
         blog.setTitle(blogDto.getTitle());
         blog.setImage(blogDto.getImage());
         blog.setContent(blogDto.getContent());
-
-       return blog;
+        authorService.increaseBlogCount(blogDto.getAuthorId());
+        return blog;
     }
 
     public void deleteById(Long id){
+        Blog blog = findById(id);
         blogRepository.deleteById(id);
+        Long authorId = blog.getAuthor().getId();
+        authorService.decreaseBlogCount(authorId);
     }
 
     public Blog findById(Long id){
@@ -47,22 +51,20 @@ public class BlogService {
         return blogRepository.findAll(pageable);
     }
 
-    public Blog update(BlogDto blogDto,Long id){
+    public Blog update(BlogUpdateDto blogUpdateDto, Long id){
         Blog blog = findById(id);
-        Author author = authorService.findById(blogDto.getAuthorId());
-        blog.setAuthor(author);
-        for (Long categoryId : blogDto.getCategoryIds()){
+        for (Long categoryId : blogUpdateDto.getCategoryIds()){
             Category category = categoryService.findById(categoryId);
             blog.getCategory().add(category);
         }
-        for (String tag : blogDto.getTags()){
+        for (String tag : blogUpdateDto.getTags()){
             blog.getTags().add(tag);
         }
-        blog.setTitle(blogDto.getTitle());
-        blog.setImage(blogDto.getImage());
-        blog.setContent(blogDto.getContent());
+        blog.setTitle(blogUpdateDto.getTitle());
+        blog.setImage(blogUpdateDto.getImage());
+        blog.setContent(blogUpdateDto.getContent());
         return blogRepository.save(blog);
     }
 
-    
+
 }
