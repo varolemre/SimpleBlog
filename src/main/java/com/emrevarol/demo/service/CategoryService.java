@@ -15,20 +15,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
-    public Category save(CategoryDto categoryDto){
+    public Category save(CategoryDto categoryDto) {
         Category category = modelMapper.map(categoryDto, Category.class);
         return categoryRepository.save(category);
     }
 
-    public void deleteById(Long id){
-           categoryRepository.deleteById(id);
+    public void deleteById(Long id) {
+        categoryRepository.deleteById(id);
     }
 
-    public Category update(CategoryDto categoryDto,Long id){
+    public Category update(CategoryDto categoryDto, Long id) {
         Optional<Category> category = categoryRepository.findById(id);
-        if(category.isPresent()){
+        if (category.isPresent()) {
             category.get().setName(categoryDto.getName());
             category.get().setDescription(categoryDto.getDescription());
             return categoryRepository.save(category.get());
@@ -36,11 +36,11 @@ public class CategoryService {
         throw new IllegalArgumentException("Category not found");
     }
 
-    public Category findById(Long id){
+    public Category findById(Long id) {
         return categoryRepository.findById(id).orElseThrow();
     }
 
-    public Page<Category> findByPagination(Pageable pageable){
+    public Page<Category> findByPagination(Pageable pageable) {
         return categoryRepository.findAll(pageable);
     }
 }

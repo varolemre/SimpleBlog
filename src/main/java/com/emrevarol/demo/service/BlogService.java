@@ -22,18 +22,23 @@ public class BlogService {
         Blog blog = new Blog();
         Author author = authorService.findById(blogDto.getAuthorId());
         blog.setAuthor(author);
-        for (Long id : blogDto.getCategoryIds()){
-            Category category = categoryService.findById(id);
-            blog.getCategory().add(category);
+        if(blogDto.getCategoryIds() != null){
+            for (Long id : blogDto.getCategoryIds()){
+                Category category = categoryService.findById(id);
+                blog.getCategory().add(category);
+            }
         }
-        for (String tag : blogDto.getTags()){
-            blog.getTags().add(tag);
+        if(blogDto.getTags() != null){
+            for (String tag : blogDto.getTags()){
+                blog.getTags().add(tag);
+            }
         }
+
         blog.setTitle(blogDto.getTitle());
         blog.setImage(blogDto.getImage());
         blog.setContent(blogDto.getContent());
         authorService.increaseBlogCount(blogDto.getAuthorId());
-        return blog;
+        return blogRepository.save(blog);
     }
 
     public void deleteById(Long id){

@@ -16,20 +16,20 @@ import java.util.Optional;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final ModelMapper modelMapper;
 
-    public Author save(AuthorDto authorDto){
+    public Author save(AuthorDto authorDto) {
         Author author = modelMapper.map(authorDto, Author.class);
         return authorRepository.save(author);
     }
 
-    public void deleteById(Long id){
-       authorRepository.deleteById(id);
+    public void deleteById(Long id) {
+        authorRepository.deleteById(id);
     }
 
-    public Author update(AuthorDto authorDto,Long id){
+    public Author update(AuthorDto authorDto, Long id) {
         Optional<Author> byId = authorRepository.findById(id);
-        if(byId.isPresent()){
+        if (byId.isPresent()) {
             byId.get().setFirstName(authorDto.getFirstName());
             byId.get().setLastName(authorDto.getLastName());
             return authorRepository.save(byId.get());
@@ -37,25 +37,25 @@ public class AuthorService {
         throw new IllegalArgumentException("Author not found");
     }
 
-    public Author findById(Long id){
-      return authorRepository.findById(id).orElseThrow();
+    public Author findById(Long id) {
+        return authorRepository.findById(id).orElseThrow();
     }
 
-    public Page<Author> findByPagination(Pageable pageable){
-       return authorRepository.findAll(pageable);
+    public Page<Author> findByPagination(Pageable pageable) {
+        return authorRepository.findAll(pageable);
     }
 
-    public void increaseBlogCount(Long id){
+    public void increaseBlogCount(Long id) {
         Author author = findById(id);
         Long blogAmount = author.getBlogAmount();
-        author.setBlogAmount(blogAmount+1);
+        author.setBlogAmount(blogAmount + 1);
         authorRepository.save(author);
     }
 
-    public void decreaseBlogCount(Long id){
+    public void decreaseBlogCount(Long id) {
         Author author = findById(id);
         Long blogAmount = author.getBlogAmount();
-        author.setBlogAmount(blogAmount-1);
+        author.setBlogAmount(blogAmount - 1);
         authorRepository.save(author);
     }
 }

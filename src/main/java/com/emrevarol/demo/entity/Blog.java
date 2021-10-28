@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Data
-public class Blog extends BaseEntity{
+public class Blog extends BaseEntity {
 
     private String title;
 
